@@ -1,48 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-import { useState } from 'react';
+import "./App.css";
+import { useState } from "react";
 
-function Heading(props) {
-  return <h1>{props.caption}</h1>;
-}
-// function() { return setNumState(numState + 1) }
-// () => setNumState(numState + 1)
-// () => { return setNumState(numState + 1) }
-// These three are all the same
+const withRedColor = (Component) => {
+  const ComponentWithRedColor = (props) => {
+    const [color, setColor] = useState("green");
 
-// onClick={() => setNumState(numState + 1)} === document.querySelector(button).addEventlistener("click", () => setNumState(numState + 1))
-function Button(props) {
-  const [numState, setNumState] = useState(3);
-  console.log(numState);
+    setTimeout(() => {
+      setColor("red");
+    }, 5000);
 
+    return <Component style={{ color }} {...props} />;
+  };
 
-  return (
-    <>
-      <button onClick={() => setNumState(numState + 1)}>
-        Click me
-      </button>
-      <Heading caption={numState}/>
-    </>
-  );
-}
+  return ComponentWithRedColor;
+};
+
+const HelloWorld = ({ ...props }) => {
+  return <h1 {...props}>Hello World</h1>;
+};
+
+const GoodBye = ({ ...props }) => {
+  return <h1 {...props}>Good Bye</h1>;
+};
+
+const RedHelloWorld = withRedColor(HelloWorld);
+const RedGoodBye = withRedColor(GoodBye);
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button />
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
+    <div className="App">
+      <header className="App-header">
+        <RedHelloWorld name="Yuji" />
+        <RedGoodBye banana="tasty" />
       </header>
     </div>
   );
